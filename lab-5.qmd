@@ -1,6 +1,7 @@
 ---
 title: "Lab 5 - Modelling I"
 categories: "Lab"
+author: "Prabhjot Singh"
 ---
 
 # Introduction
@@ -12,6 +13,13 @@ In this lab you'll start your practice of statistical modelling. You'll fit mode
 Your plots should include an informative title, axes should be labeled, and careful consideration should be given to aesthetic choices.
 
 In addition, the code should all the code should be be able to be read (not run off the page) when you render to PDF. Make sure that is the case, and add line breaks where the code is running off the page.
+
+```{r}
+library(tidyverse)
+library(openintro)
+library(broom)
+library(gapminder)
+```
 
 ::: callout-important
 Render your document. If your code is running off the page for a given question such that we can’t see your entire code, we will not evaluate any of the code for that question. The question will automatically receive a 0. This is something you can and should verify before you turn in your work.
@@ -32,26 +40,68 @@ Failure to cite outside resources used, including Large Language Models like Cha
 We are interested in the impact of smoking during pregnancy. Since it is not possible to run a randomized controlled experiment to investigate this impact, we will instead use a data set has been of interest to medical researchers who are studying the relation between habits and practices of expectant mothers and the birth of their children. This is a random sample of 1,000 cases from a data set released in 2014 by the state of North Carolina. The data set is called `births14`, and it is included in the **openintro** package you loaded at the beginning of the assignment.
 
 a.  Create a version of the `births14` data set dropping observations where there are `NA`s for `habit`. You can call this version `births14_habitgiven`.
+```{r}
+births14
+```
+
+```{r}
+births14_habitgiven <- births14 |>
+  drop_na(habit)
+```
 
 b.  Plotting the data is a useful first step because it helps us quickly visualize trends, identify strong associations, and develop research questions. Create an appropriate plot displaying the relationship between `weight` and `habit`. In 2-3 sentences, discuss the relationships observed.
 
+```{r}
+ggplot(births14_habitgiven, aes(x = habit, y = weight)) +
+  geom_boxplot() +
+  labs(
+    title = "Birth Weight by Smoking Habit During Pregnancy",
+    x = "Smoking habit",
+    y = "Birth weight (oz)"
+  )
+```
+
+**Answer:** The boxplot shows that the median birth weight is higher for non-smokers than for smokers. The interquartile range is also wider for smokers than for non-smokers.
+
+
 c.  Now, fit a linear model that predicts `weight` from `habit`. Provide the tidy summary output below.
+
+```{r}
+q1_habit_model <- lm(weight ~ habit, data = births14_habitgiven)
+tidy(q1_habit_model)
+```
 
 d.  Write the estimated least squares regression line below using proper notation.
 
     ::: callout-tip
     If you need to type an equation using proper notation, type your answers in-between `$$` and `$$`. You may use `\hat{example}` to put a hat on a character.
     :::
+$$
+\hat{weight}=7.269-0.592 (smoker)
+$$
 
 ## Question 2
 
 a.  Another researcher is interested in assessing the relationship between babies’ weights and mothers’ ages. Fit another linear model to investigate this relationship. Provide the summary output below.
 
+```{r}
+q2_age_model <- lm(weight ~ mage, data = births14)
+tidy(q2_age_model)
+```
+
 b.  In 2-3 sentences, explain how the regression line to model these data is fit, i.e., based on what criteria R determines the regression line.
+
+**Answer:** It is based on the least squares method meaning that R is calculating the line that minimizes the sum of the squared distances between the points and the line. The distance between the point and the line is the residual.
+
 
 c.  Interpret the intercept in the context of the data and the research question. Is the intercept meaningful in this context? Why or why not?
 
+**Answer:**  The intercept is the weight of a baby when the mother's age is 0. This is not meaningful in this context because it is not possible for a mother to be 0 years old.
+
 d.  Interpret the slope in the context of the data and the research question.
+
+**Answer:**
+The slope is the expected change in weight of a baby for each year of the mother's age. In this case the suggested positiver elationship is that the weight of a baby increases by 0.014 ounces for each additional year of the mother's age.
 
 # Part 2 - Parasites
 
@@ -83,11 +133,32 @@ Let’s start by reading in the `parasites` data and examining the relationship 
 
 a.  Load the data and save the data frame as `parasites`.
 
+```{r}
+parasites <- read_csv("data/parasites.csv")
+```
+
 b.  Based on the goals of the analysis, what is the response variable?
+
+**Answer:** The response variable is `parsim`.
 
 c.  Visualize the relationship between the two variables.
 
+```{r}
+ggplot(parasites, aes(x = divergence_time, y = parsim)) +
+  geom_point(alpha = 0.6) +
+  labs(
+    title = "Parasite Similarity vs Divergence Time",
+    x = "Divergence time (million years)",
+    y = "Parasite similarity (parsim)"
+  )
+```
+
 d.  Use the visualization to describe the relationship between the two variables.
+
+**Answer:** The relationship between the two variables is negative. As the divergence time increases, the parasite similarity decreases.
+
+
+
 
 ## Question 4
 
@@ -95,11 +166,35 @@ Next, model this relationship.
 
 a.  Fit the model and write the estimated regression equation.
 
+```{r}
+q4_model <- lm(parsim ~ divergence_time, data = parasites)
+tidy(q4_model)
+```
+
 b.  Interpret the slope and the intercept in the context of the data.
+$$
+\hat{parsim}=0.379-0.006 (divergencetime)
+$$
+
+**Answer:** The slope is the expected change in parasite similarity for each additional million years of divergence time. In this case the suggested negative relationship is that the parasite similarity decreases by 0.006 for each additional million years of divergence time.
 
 c.  Recreate the visualization from Question 3, this time adding a regression line to the visualization.
 
+```{r}
+ggplot(parasites, aes(x = divergence_time, y = parsim)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm", se = FALSE, color = "steelblue") +
+  labs(
+    title = "Parasite Similarity vs Divergence Time with Regression Line",
+    x = "Divergence time (million years)",
+    y = "Parasite similarity (parsim)"
+  )
+```
+
 d.  What do you notice about the prediction (regression) line that may be strange, particularly for very large divergence times?
+
+**Answer:**
+The prediction line is strange because it suggests that the parasite similarity is 0 for very large divergence times like >70 million years.
 
 ## Question 5
 
@@ -111,9 +206,27 @@ a.  Using mutate, create a new variable `transformed_parsim` that is calculated 
     `log()` in R represents the **nautral log**.
     :::
 
+```{r}
+parasites <- parasites |>
+  mutate(transformed_parsim = log(parsim / (1 - parsim)))
+```
+
 b.  Then, visualize the relationship between divergence_time and `transformed_parsim`. Add a regression line to your visualization.
 
+```{r}
+ggplot(parasites, aes(x = divergence_time, y = transformed_parsim)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm", se = FALSE, color = "steelblue") +
+  labs(
+    title = "Transformed Parasite Similarity vs Divergence Time",
+    x = "Divergence time (million years)",
+    y = "log(parsim / (1 - parsim))"
+  )
+```
+
 c.  Write a 1-2 sentence description of what you observe in the visualization.
+
+**Answer:** The visualization shows a negative relationship between the divergence time and the transformed parasite similarity.
 
 ## Question 6
 
@@ -129,9 +242,31 @@ To answer this question, begin by fitting a linear regression model to each pair
 
 -   `precdiff` and `transformed_parsim`
 
+```{r}
+dt_model <- lm(transformed_parsim ~ divergence_time, data = parasites)
+dist_model <- lm(transformed_parsim ~ distance, data = parasites)
+BM_model <- lm(transformed_parsim ~ BMdiff, data = parasites)
+prec_model <- lm(transformed_parsim ~ precdiff, data = parasites)
+```
+
 a.  Report the slopes for each of these models. Use proper notation.
+$$
+\hat{β_{dt}} ​=-0.09
+$$
+
+$$
+\hat{β_{dist}} ​=-0.0002
+$$
+$$
+\hat{β_{BM}} ​=-0.000005
+$$
+$$
+\hat{β_{BM}} ​=-0.006
+$$
 
 b.  To answer the question of interest, would it be useful to compare the slopes in each model to choose the variable that is the strongest predictor of parasite similarity? Why or why not?
+
+**Answer:** No, it is not useful as all the slopes have a different unit making them incomparable. The bigger absolute slope is not necessarily the strongest predictor.
 
 ## Question 7
 
@@ -143,7 +278,34 @@ You can calculate $R^2$ using the glance function. For example, you can calculat
 
 a.  Calculate and report $R^2$ for each model fit in the previous exercise.
 
+```{r}
+bind_rows(
+  glance(dt_model) |> mutate(model = "dt_model"),
+  glance(dist_model) |> mutate(model = "dist_model"),
+  glance(BM_model) |> mutate(model = "BM_model"),
+  glance(prec_model) |> mutate(model = "prec_model")
+) |>
+  select(model, r.squared)
+```
+$$
+R^2_{dt}=0.512
+$$
+$$
+R^2_{dist}=0.443
+$$
+
+$$
+R^2_{BM}=0.003
+$$
+
+$$
+R^2_{prec}=0.008
+$$
+
 b.  To answer our question of interest, would it be useful to compare the $R^2$ in each model to choose the variable that is the strongest predictor of parasite similarity? Why or why not?
+
+**Answer:** Yes, it would be useful to compare the $R^2$ in each model to choose the variable that is the strongest predictor of parasite similarity. In this case the strongest predictor is the divergence time with an $R^2$ of 0.512.
+
 
 # Part 3 - GDP and life expectancy
 
@@ -165,6 +327,12 @@ Gapminder is a “fact tank” that uses publicly available world data to produc
 
 a.  **Data:** For our analysis, we will only be working with data from 2007. Below, filter the data set so only values from the year 2007 are shown. Save this data set as `gapminder_07` and use it for the remainder of this exercise and the following.
 
+``` {r}
+gapminder_07 <- gapminder %>%
+  filter(year == 2007) %>%
+  mutate(gdpPercap_log = log(gdpPercap))
+```
+
 b.  **Visualization:** We are interested in learning more about GDP, and we’ll start with exploring the relationship between life expectancy and GDP. Create two visualizations:
 
     -   Scatter plot of `gdpPercap` vs. `lifeExp`.
@@ -173,9 +341,35 @@ b.  **Visualization:** We are interested in learning more about GDP, and we’ll
 
     First describe the relationship between each pair of the variables. Then, comment on which relationship would be better modeled using a linear model, and explain your reasoning.
 
+``` {r}
+ggplot(gapminder_07, aes(x = gdpPercap, y = lifeExp)) +
+  geom_point(alpha = 0.7) +
+  labs(
+    title = "GDP per Capita vs Life Expectancy (2007)",
+    x = "GDP per capita (USD)",
+    y = "Life expectancy (years)"
+  )
+
+ggplot(gapminder_07, aes(x = gdpPercap_log, y = lifeExp)) +
+  geom_point(alpha = 0.7) +
+  labs(
+    title = "Log GDP per Capita vs Life Expectancy (2007)",
+    x = "log(GDP per capita)",
+    y = "Life expectancy (years)"
+  )
+```
+
+**Answer:** Both visualizations show a positive relationship between the log of the GDP per capita and the life expectancy. The second visualization shows a more linear relationship than the first visualization. The first visualization shows a more curved relationship. So, the second visualization (log GDP per capita vs life expectancy) would be better modeled using a linear model.
+
+
 c.  **Model fitting:**
 
     -   Fit a linear model predicting log gross domestic product from life expectancy. Display the tidy summary.
+
+``` {r}
+q8_model <- lm(gdpPercap_log ~ lifeExp, data = gapminder_07)
+tidy(q8_model)
+```
 
 d.  **Model evaluation:**
 
@@ -183,11 +377,34 @@ d.  **Model evaluation:**
 
     -   Interpret R-squared in the context of the data and the research question.
 
+``` {r}
+r2_glance <- glance(q8_model)$r.squared
+r2_corr <- cor(gapminder_07$gdpPercap_log, gapminder_07$lifeExp)^2
+tibble(method = c("glance", "correlation_squared"),
+       r_squared = c(r2_glance, r2_corr))
+```
+**Answer:** The $R^2$ from the glance function is 0.654 and the $R^2$ from the correlation coefficient is 0.654. They match and also suggest that 65.4% of the variability in the log of the GDP per capita can be explained by the life expectancy.
+
 ## Question 9
 
 Next, we want to examine if the relationship between GDP and life expectancy that we observed in the previous exercise holds across all continents in our data. We’ll continue to work with logged GDP (`gdpPercap_log`) and data from 2007.
 
 a.  **Justification:** Create a scatter plot of `gdpPercap_log` vs. `lifeExp`, where the points are colored by `continent`. Do you think the trend between `gdpPercap_log` and `lifeExp` is different for different continents? Justify your answer with specific features of the plot.
+
+``` {r}
+library(plotly)
+p<-ggplot(gapminder_07, aes(x = lifeExp, y = gdpPercap_log, color = continent)) +
+  geom_point(alpha = 0.8) +
+  labs(
+    title = "Log GDP per Capita vs Life Expectancy by Continent (2007)",
+    x = "Life expectancy (years)",
+    y = "log(GDP per capita)",
+    color = "Continent"
+  )
+ggplotly(p)
+```
+
+**Answer:** Overall, the trend between the log of the GDP per capita and the life expectancy is positive for all continents. However, the trend is different for different continents.For instance, Africa has most of points clustered around the bottom left of the plot suggesting lower life expectancy and lower GDP per capita. Europe, Amercas and Oceania has most of the points clustered around the top right of the plot suggesting higher life expectancy and higher GDP per capita. Asia has a more scattered pattern suggesting a more mixed relationship between life expectancy and GDP per capita.
 
 b.  **Model fitting and interpretation:**
 
@@ -197,7 +414,38 @@ b.  **Model fitting and interpretation:**
 
     -   Interpret the *slope* of the model, making sure that your interpretation is in the units of the original data (not on log scale).
 
+``` {r}
+gapminder_07 <- gapminder_07 |>
+  mutate(continent = fct_relevel(continent, "Africa"))
+
+q9_additive_model <- lm(gdpPercap_log ~ lifeExp + continent, data = gapminder_07)
+q9_additive_model_tidy <- tidy(q9_additive_model)
+q9_additive_model_tidy
+
+# Also show the result in original GDP per capita units by exponentiating the estimates
+q9_additive_model_tidy_original_units <- q9_additive_model_tidy |>
+  mutate(estimate_orig = exp(estimate))
+
+q9_additive_model_tidy_original_units
+```
+**Answer:**
+In the original units the intercept is 24.651 meaning that in Africa a life expectancy of 0 years would have a GDP per capita of about 24.651\$. In the original units the slope would be 1.081257 meaning that for each additional year of life expectancy, the GDP per capita increases by about 1.081257\$.
+
+
 c.  **Prediction:** Predict the GDP of a country in Asia where the average life expectancy is 70 years old.
+
+``` {r}
+q9_pred_log <- predict(
+  q9_additive_model,
+  newdata = tibble(lifeExp = 70, continent = "Asia")
+)
+
+tibble(
+  predicted_log_gdpPercap = q9_pred_log,
+  predicted_gdpPercap = exp(q9_pred_log)
+)
+```
+**Answer:** The expected GDP would be about 5907$.
 
 ## Question 10
 
@@ -214,6 +462,8 @@ Then, write a paragraph (4-5 sentences) addressing the following:
 -   What are your general take-aways from this presentation?
 
 -   What are your general take-aways from how this presentation was given?
+
+**Answer:** I really liked the presentation style and how Hans Rosling turned a huge dataset into an animated story. Some of the time periods were hard to follow as he went over those very quickly. Key takeaways for me were, global health and income has improved a lot overall but the progress wasn't evenly spread. Big gaps still exist between countries and even within countries. The presentation had a strong narration plus fluid motion based visual that made complex trends easy to understand.
 
 # Wrap-up
 

@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Prabhjot Singh">
+
+<title>Lab 5 - Modelling I</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="lab-5_files/libs/clipboard/clipboard.min.js"></script>
+<script src="lab-5_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="lab-5_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="lab-5_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="lab-5_files/libs/quarto-html/popper.min.js"></script>
+<script src="lab-5_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="lab-5_files/libs/quarto-html/anchor.min.js"></script>
+<link href="lab-5_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="lab-5_files/libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="lab-5_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="lab-5_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="lab-5_files/libs/bootstrap/bootstrap-d6a003b94517c951b2d65075d42fb01b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="lab-5_files/libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet">
+<script src="lab-5_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="lab-5_files/libs/plotly-binding-4.12.0/plotly.js"></script>
+<script src="lab-5_files/libs/typedarray-0.1/typedarray.min.js"></script>
+<script src="lab-5_files/libs/jquery-3.5.1/jquery.min.js"></script>
+<link href="lab-5_files/libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet">
+<script src="lab-5_files/libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+<link href="lab-5_files/libs/plotly-htmlwidgets-css-2.25.2/plotly-htmlwidgets.css" rel="stylesheet">
+<script src="lab-5_files/libs/plotly-main-2.25.2/plotly-latest.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lab 5 - Modelling I</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Lab</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Prabhjot Singh </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>In this lab you’ll start your practice of statistical modelling. You’ll fit models, interpret model output, and make decisions about your data and research question based on the model results.</p>
+<section id="guidelines" class="level2">
+<h2 class="anchored" data-anchor-id="guidelines">Guidelines</h2>
+<p>Your plots should include an informative title, axes should be labeled, and careful consideration should be given to aesthetic choices.</p>
+<p>In addition, the code should all the code should be be able to be read (not run off the page) when you render to PDF. Make sure that is the case, and add line breaks where the code is running off the page.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.6
+✔ forcats   1.0.1     ✔ stringr   1.6.0
+✔ ggplot2   4.0.1     ✔ tibble    3.3.1
+✔ lubridate 1.9.4     ✔ tidyr     1.3.2
+✔ purrr     1.2.1     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(openintro)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: airports
+Loading required package: cherryblossom
+Loading required package: usdata</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gapminder)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Render your document. If your code is running off the page for a given question such that we can’t see your entire code, we will not evaluate any of the code for that question. The question will automatically receive a 0. This is something you can and should verify before you turn in your work.</p>
+</div>
+</div>
+<p>You should have at least 3 commits with meaningful commit messages by the end of the assignment.</p>
+<p>Additionally, if you’re using functions that are not introduced in the course materials, you must cite your sources.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Failure to cite outside resources used, including Large Language Models like Chat GPT, is a violation of the Duke Community Standard and will be treated as such.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="part-1---smoking-during-pregnancy" class="level1">
+<h1>Part 1 - Smoking during pregnancy</h1>
+<section id="question-1" class="level2">
+<h2 class="anchored" data-anchor-id="question-1">Question 1</h2>
+<p>We are interested in the impact of smoking during pregnancy. Since it is not possible to run a randomized controlled experiment to investigate this impact, we will instead use a data set has been of interest to medical researchers who are studying the relation between habits and practices of expectant mothers and the birth of their children. This is a random sample of 1,000 cases from a data set released in 2014 by the state of North Carolina. The data set is called <code>births14</code>, and it is included in the <strong>openintro</strong> package you loaded at the beginning of the assignment.</p>
+<ol type="a">
+<li>Create a version of the <code>births14</code> data set dropping observations where there are <code>NA</code>s for <code>habit</code>. You can call this version <code>births14_habitgiven</code>.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>births14</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1,000 × 13
+    fage  mage mature     weeks premie visits gained weight lowbirthweight sex  
+   &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;          &lt;chr&gt;
+ 1    34    34 younger m…    37 full …     14     28   6.96 not low        male 
+ 2    36    31 younger m…    41 full …     12     41   8.86 not low        fema…
+ 3    37    36 mature mom    37 full …     10     28   7.51 not low        fema…
+ 4    NA    16 younger m…    38 full …     NA     29   6.19 not low        male 
+ 5    32    31 younger m…    36 premie     12     48   6.75 not low        fema…
+ 6    32    26 younger m…    39 full …     14     45   6.69 not low        fema…
+ 7    37    36 mature mom    36 premie     10     20   6.13 not low        fema…
+ 8    29    24 younger m…    40 full …     13     65   6.74 not low        male 
+ 9    30    32 younger m…    39 full …     15     25   8.94 not low        fema…
+10    29    26 younger m…    39 full …     11     22   9.12 not low        male 
+# ℹ 990 more rows
+# ℹ 3 more variables: habit &lt;chr&gt;, marital &lt;chr&gt;, whitemom &lt;chr&gt;</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>births14_habitgiven <span class="ot">&lt;-</span> births14 <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(habit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="2" type="a">
+<li>Plotting the data is a useful first step because it helps us quickly visualize trends, identify strong associations, and develop research questions. Create an appropriate plot displaying the relationship between <code>weight</code> and <code>habit</code>. In 2-3 sentences, discuss the relationships observed.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(births14_habitgiven, <span class="fu">aes</span>(<span class="at">x =</span> habit, <span class="at">y =</span> weight)) <span class="sc">+</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Birth Weight by Smoking Habit During Pregnancy"</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Smoking habit"</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Birth weight (oz)"</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lab-5_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Answer:</strong> The boxplot shows that the median birth weight is higher for non-smokers than for smokers. The interquartile range is also wider for smokers than for non-smokers.</p>
+<ol start="3" type="a">
+<li>Now, fit a linear model that predicts <code>weight</code> from <code>habit</code>. Provide the tidy summary output below.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>q1_habit_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(weight <span class="sc">~</span> habit, <span class="at">data =</span> births14_habitgiven)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(q1_habit_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 5
+  term        estimate std.error statistic    p.value
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
+1 (Intercept)    7.27     0.0435    167.   0         
+2 habitsmoker   -0.593    0.128      -4.65 0.00000382</code></pre>
+</div>
+</div>
+<ol start="4" type="a">
+<li><p>Write the estimated least squares regression line below using proper notation.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you need to type an equation using proper notation, type your answers in-between <code>$$</code> and <code>$$</code>. You may use <code>\hat{example}</code> to put a hat on a character.</p>
+</div>
+</div>
+<p><span class="math display">\[
+\hat{weight}=7.269-0.592 (smoker)
+\]</span></p></li>
+</ol>
+</section>
+<section id="question-2" class="level2">
+<h2 class="anchored" data-anchor-id="question-2">Question 2</h2>
+<ol type="a">
+<li>Another researcher is interested in assessing the relationship between babies’ weights and mothers’ ages. Fit another linear model to investigate this relationship. Provide the summary output below.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>q2_age_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(weight <span class="sc">~</span> mage, <span class="at">data =</span> births14)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(q2_age_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 5
+  term        estimate std.error statistic   p.value
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)   6.79     0.208       32.7  1.15e-159
+2 mage          0.0142   0.00717      1.99 4.72e-  2</code></pre>
+</div>
+</div>
+<ol start="2" type="a">
+<li>In 2-3 sentences, explain how the regression line to model these data is fit, i.e., based on what criteria R determines the regression line.</li>
+</ol>
+<p><strong>Answer:</strong> It is based on the least squares method meaning that R is calculating the line that minimizes the sum of the squared distances between the points and the line. The distance between the point and the line is the residual.</p>
+<ol start="3" type="a">
+<li>Interpret the intercept in the context of the data and the research question. Is the intercept meaningful in this context? Why or why not?</li>
+</ol>
+<p><strong>Answer:</strong> The intercept is the weight of a baby when the mother’s age is 0. This is not meaningful in this context because it is not possible for a mother to be 0 years old.</p>
+<ol start="4" type="a">
+<li>Interpret the slope in the context of the data and the research question.</li>
+</ol>
+<p><strong>Answer:</strong> The slope is the expected change in weight of a baby for each year of the mother’s age. In this case the suggested positiver elationship is that the weight of a baby increases by 0.014 ounces for each additional year of the mother’s age.</p>
+</section>
+</section>
+<section id="part-2---parasites" class="level1">
+<h1>Part 2 - Parasites</h1>
+<p>Parasites can cause infectious disease – but not all animals are affected by the same parasites. Some parasites are present in a multitude of species and others are confined to a single host. It is hypothesized that closely related hosts are more likely to share the same parasites. More specifically, it is thought that closely related hosts will live in similar environments and have similar genetic makeup that coincides with optimal conditions for the same parasite to flourish.</p>
+<p>In this part of the lab, we will see how much evolutionary history predicts parasite similarity.</p>
+<p>The dataset comes from an Ecology Letters paper by Cooper at al.&nbsp;(2012) entitled “Phylogenetic host specificity and understanding parasite sharing in primates” located <a href="https://onlinelibrary.wiley.com/doi/10.1111/j.1461-0248.2012.01858.x">here</a>. The goal of the paper was to identify the ability of evolutionary history and ecological traits to characterize parasite host specificity.</p>
+<p>Each row of the data contains two species, <code>species1</code> and <code>species2</code>.</p>
+<p>Subsequent columns describe metrics that compare the species:</p>
+<ul>
+<li><p><code>divergence_time</code>: how many (millions) of years ago the two species diverged. i.e.&nbsp;how many million years ago they were the same species.</p></li>
+<li><p><code>distance</code>: geodesic distance between species geographic range centroids (in kilometers)</p></li>
+<li><p><code>BMdiff</code>: difference in body mass between the two species (in grams)</p></li>
+<li><p><code>precdiff</code>: difference in mean annual precipitation across the two species geographic ranges (mm)</p></li>
+<li><p><code>parsim</code>: a measure of parasite similarity (proportion of parasites shared between species, ranges from 0 to 1.)</p></li>
+</ul>
+<p>The data are available in <code>parasites.csv</code> in your <code>data</code> folder.</p>
+<section id="question-3" class="level2">
+<h2 class="anchored" data-anchor-id="question-3">Question 3</h2>
+<p>Let’s start by reading in the <code>parasites</code> data and examining the relationship between <code>divergence_time</code> and <code>parsim</code>.</p>
+<ol type="a">
+<li>Load the data and save the data frame as <code>parasites</code>.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>parasites <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/parasites.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 595 Columns: 7
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (2): species1, species2
+dbl (5): divergence_time, distance, BMdiff, precdiff, parsim
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+</div>
+<ol start="2" type="a">
+<li>Based on the goals of the analysis, what is the response variable?</li>
+</ol>
+<p><strong>Answer:</strong> The response variable is <code>parsim</code>.</p>
+<ol start="3" type="a">
+<li>Visualize the relationship between the two variables.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(parasites, <span class="fu">aes</span>(<span class="at">x =</span> divergence_time, <span class="at">y =</span> parsim)) <span class="sc">+</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Parasite Similarity vs Divergence Time"</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Divergence time (million years)"</span>,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Parasite similarity (parsim)"</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lab-5_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol start="4" type="a">
+<li>Use the visualization to describe the relationship between the two variables.</li>
+</ol>
+<p><strong>Answer:</strong> The relationship between the two variables is negative. As the divergence time increases, the parasite similarity decreases.</p>
+</section>
+<section id="question-4" class="level2">
+<h2 class="anchored" data-anchor-id="question-4">Question 4</h2>
+<p>Next, model this relationship.</p>
+<ol type="a">
+<li>Fit the model and write the estimated regression equation.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>q4_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(parsim <span class="sc">~</span> divergence_time, <span class="at">data =</span> parasites)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(q4_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 5
+  term            estimate std.error statistic   p.value
+  &lt;chr&gt;              &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)      0.379    0.0121        31.4 4.59e-128
+2 divergence_time -0.00653  0.000312     -20.9 2.70e- 73</code></pre>
+</div>
+</div>
+<ol start="2" type="a">
+<li>Interpret the slope and the intercept in the context of the data. <span class="math display">\[
+\hat{parsim}=0.379-0.006 (divergencetime)
+\]</span></li>
+</ol>
+<p><strong>Answer:</strong> The slope is the expected change in parasite similarity for each additional million years of divergence time. In this case the suggested negative relationship is that the parasite similarity decreases by 0.006 for each additional million years of divergence time.</p>
+<ol start="3" type="a">
+<li>Recreate the visualization from Question 3, this time adding a regression line to the visualization.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(parasites, <span class="fu">aes</span>(<span class="at">x =</span> divergence_time, <span class="at">y =</span> parsim)) <span class="sc">+</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Parasite Similarity vs Divergence Time with Regression Line"</span>,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Divergence time (million years)"</span>,</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Parasite similarity (parsim)"</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lab-5_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol start="4" type="a">
+<li>What do you notice about the prediction (regression) line that may be strange, particularly for very large divergence times?</li>
+</ol>
+<p><strong>Answer:</strong> The prediction line is strange because it suggests that the parasite similarity is 0 for very large divergence times like &gt;70 million years.</p>
+</section>
+<section id="question-5" class="level2">
+<h2 class="anchored" data-anchor-id="question-5">Question 5</h2>
+<p>Since <code>parsim</code> takes values between 0 and 1, we want to transform this variable so that it can range between (−∞,+∞). This will be better suited for fitting a regression model (and interpreting predicted values!)</p>
+<ol type="a">
+<li><p>Using mutate, create a new variable <code>transformed_parsim</code> that is calculated as <code>log(parsim/(1-parsim))</code>. Add this variable to your data frame.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>log()</code> in R represents the <strong>nautral log</strong>.</p>
+</div>
+</div></li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>parasites <span class="ot">&lt;-</span> parasites <span class="sc">|&gt;</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">transformed_parsim =</span> <span class="fu">log</span>(parsim <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> parsim)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="2" type="a">
+<li>Then, visualize the relationship between divergence_time and <code>transformed_parsim</code>. Add a regression line to your visualization.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(parasites, <span class="fu">aes</span>(<span class="at">x =</span> divergence_time, <span class="at">y =</span> transformed_parsim)) <span class="sc">+</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Transformed Parasite Similarity vs Divergence Time"</span>,</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Divergence time (million years)"</span>,</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"log(parsim / (1 - parsim))"</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lab-5_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol start="3" type="a">
+<li>Write a 1-2 sentence description of what you observe in the visualization.</li>
+</ol>
+<p><strong>Answer:</strong> The visualization shows a negative relationship between the divergence time and the transformed parasite similarity.</p>
+</section>
+<section id="question-6" class="level2">
+<h2 class="anchored" data-anchor-id="question-6">Question 6</h2>
+<p><em>Which variable is the strongest individual predictor of parasite similarity between species?</em></p>
+<p>To answer this question, begin by fitting a linear regression model to each pair of variables. Do not report the model outputs in a tidy format but save each one as <code>dt_model</code>, <code>dist_model</code>, <code>BM_model</code>, and <code>prec_model</code>, respectively.</p>
+<ul>
+<li><p><code>divergence_time</code> and <code>transformed_parsim</code></p></li>
+<li><p><code>distance</code> and <code>transformed_parsim</code></p></li>
+<li><p><code>BMdiff</code> and <code>transformed_parsim</code></p></li>
+<li><p><code>precdiff</code> and <code>transformed_parsim</code></p></li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>dt_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(transformed_parsim <span class="sc">~</span> divergence_time, <span class="at">data =</span> parasites)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>dist_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(transformed_parsim <span class="sc">~</span> distance, <span class="at">data =</span> parasites)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>BM_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(transformed_parsim <span class="sc">~</span> BMdiff, <span class="at">data =</span> parasites)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>prec_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(transformed_parsim <span class="sc">~</span> precdiff, <span class="at">data =</span> parasites)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol type="a">
+<li>Report the slopes for each of these models. Use proper notation. <span class="math display">\[
+\hat{β_{dt}} ​=-0.09
+\]</span></li>
+</ol>
+<p><span class="math display">\[
+\hat{β_{dist}} ​=-0.0002
+\]</span> <span class="math display">\[
+\hat{β_{BM}} ​=-0.000005
+\]</span> <span class="math display">\[
+\hat{β_{BM}} ​=-0.006
+\]</span></p>
+<ol start="2" type="a">
+<li>To answer the question of interest, would it be useful to compare the slopes in each model to choose the variable that is the strongest predictor of parasite similarity? Why or why not?</li>
+</ol>
+<p><strong>Answer:</strong> No, it is not useful as all the slopes have a different unit making them incomparable. The bigger absolute slope is not necessarily the strongest predictor.</p>
+</section>
+<section id="question-7" class="level2">
+<h2 class="anchored" data-anchor-id="question-7">Question 7</h2>
+<p>Now, what if we calculated <span class="math inline">\(R^2\)</span> to help answer our question? To compare the explanatory power of each individual predictor, we will look at <span class="math inline">\(R^2\)</span> between the models. <span class="math inline">\(R^2\)</span> is a measure of how much of the variability in the response variable is explained by the model.</p>
+<p>As you may have guessed from the name <span class="math inline">\(R^2\)</span> can be calculated by squaring the correlation when we have a simple linear regression model. The correlation r takes values -1 to 1, therefore, <span class="math inline">\(R^2\)</span> takes values 0 to 1. Intuitively, if r=1 or −1, then <span class="math inline">\(R^2\)</span>=1, indicating the model is a perfect fit for the data. If r≈0 then <span class="math inline">\(R^2\)</span>≈0, indicating the model is a very bad fit for the data.</p>
+<p>You can calculate <span class="math inline">\(R^2\)</span> using the glance function. For example, you can calculate <span class="math inline">\(R^2\)</span> for <code>dt_model</code> using the code <code>glance(dt_model)$r.squared</code>.</p>
+<ol type="a">
+<li>Calculate and report <span class="math inline">\(R^2\)</span> for each model fit in the previous exercise.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bind_rows</span>(</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glance</span>(dt_model) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">model =</span> <span class="st">"dt_model"</span>),</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glance</span>(dist_model) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">model =</span> <span class="st">"dist_model"</span>),</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glance</span>(BM_model) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">model =</span> <span class="st">"BM_model"</span>),</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glance</span>(prec_model) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">model =</span> <span class="st">"prec_model"</span>)</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(model, r.squared)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 2
+  model      r.squared
+  &lt;chr&gt;          &lt;dbl&gt;
+1 dt_model     0.513  
+2 dist_model   0.443  
+3 BM_model     0.00327
+4 prec_model   0.00861</code></pre>
+</div>
+</div>
+<p><span class="math display">\[
+R^2_{dt}=0.512
+\]</span> <span class="math display">\[
+R^2_{dist}=0.443
+\]</span></p>
+<p><span class="math display">\[
+R^2_{BM}=0.003
+\]</span></p>
+<p><span class="math display">\[
+R^2_{prec}=0.008
+\]</span></p>
+<ol start="2" type="a">
+<li>To answer our question of interest, would it be useful to compare the <span class="math inline">\(R^2\)</span> in each model to choose the variable that is the strongest predictor of parasite similarity? Why or why not?</li>
+</ol>
+<p><strong>Answer:</strong> Yes, it would be useful to compare the <span class="math inline">\(R^2\)</span> in each model to choose the variable that is the strongest predictor of parasite similarity. In this case the strongest predictor is the divergence time with an <span class="math inline">\(R^2\)</span> of 0.512.</p>
+</section>
+</section>
+<section id="part-3---gdp-and-life-expectancy" class="level1">
+<h1>Part 3 - GDP and life expectancy</h1>
+<p>Gapminder is a “fact tank” that uses publicly available world data to produce data visualizations and teaching resources on global development. We will use an excerpt of their data to explore relationships among world health metrics across countries and regions between the years 1952 and 2007. The data set is called <code>gapminder</code>, from the <strong>gapminder</strong> package. A table of variables can be found below.</p>
+<ul>
+<li><p><code>country</code>: The country name</p></li>
+<li><p><code>continent</code>: The continent name</p></li>
+<li><p><code>year</code>: ranges from 1952 to 2007 in increments of 5 years</p></li>
+<li><p><code>lifeExp</code>: life expectancy at birth, in years</p></li>
+<li><p><code>pop</code>: population of country</p></li>
+<li><p><code>gdpPercap</code>: GDP per capita (US$, inflation-adjusted)</p></li>
+</ul>
+<section id="question-8" class="level2">
+<h2 class="anchored" data-anchor-id="question-8">Question 8</h2>
+<ol type="a">
+<li><strong>Data:</strong> For our analysis, we will only be working with data from 2007. Below, filter the data set so only values from the year 2007 are shown. Save this data set as <code>gapminder_07</code> and use it for the remainder of this exercise and the following.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>gapminder_07 <span class="ot">&lt;-</span> gapminder <span class="sc">%&gt;%</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2007</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">gdpPercap_log =</span> <span class="fu">log</span>(gdpPercap))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="2" type="a">
+<li><p><strong>Visualization:</strong> We are interested in learning more about GDP, and we’ll start with exploring the relationship between life expectancy and GDP. Create two visualizations:</p>
+<ul>
+<li><p>Scatter plot of <code>gdpPercap</code> vs.&nbsp;<code>lifeExp</code>.</p></li>
+<li><p>Scatter plot of <code>gdpPercap_log</code> vs.&nbsp;<code>lifeExp</code>, where <code>gdpPercap_log</code> is a new variable you add to the data set by taking the natural log of <code>gdpPercap</code>.</p></li>
+</ul>
+<p>First describe the relationship between each pair of the variables. Then, comment on which relationship would be better modeled using a linear model, and explain your reasoning.</p></li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gapminder_07, <span class="fu">aes</span>(<span class="at">x =</span> gdpPercap, <span class="at">y =</span> lifeExp)) <span class="sc">+</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"GDP per Capita vs Life Expectancy (2007)"</span>,</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"GDP per capita (USD)"</span>,</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Life expectancy (years)"</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lab-5_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gapminder_07, <span class="fu">aes</span>(<span class="at">x =</span> gdpPercap_log, <span class="at">y =</span> lifeExp)) <span class="sc">+</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Log GDP per Capita vs Life Expectancy (2007)"</span>,</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"log(GDP per capita)"</span>,</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Life expectancy (years)"</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lab-5_files/figure-html/unnamed-chunk-16-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Answer:</strong> Both visualizations show a positive relationship between the log of the GDP per capita and the life expectancy. The second visualization shows a more linear relationship than the first visualization. The first visualization shows a more curved relationship. So, the second visualization (log GDP per capita vs life expectancy) would be better modeled using a linear model.</p>
+<ol start="3" type="a">
+<li><p><strong>Model fitting:</strong></p>
+<ul>
+<li>Fit a linear model predicting log gross domestic product from life expectancy. Display the tidy summary.</li>
+</ul></li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>q8_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(gdpPercap_log <span class="sc">~</span> lifeExp, <span class="at">data =</span> gapminder_07)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(q8_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 5
+  term        estimate std.error statistic  p.value
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+1 (Intercept)   2.53     0.380        6.65 5.97e-10
+2 lifeExp       0.0909   0.00558     16.3  4.12e-34</code></pre>
+</div>
+</div>
+<ol start="4" type="a">
+<li><p><strong>Model evaluation:</strong></p>
+<ul>
+<li><p>Calculate the R-squared of the model using two methods and confirm that the values match: first method is using <code>glance()</code> and the other method is based on the value of the correlation coefficient between the two variables.</p></li>
+<li><p>Interpret R-squared in the context of the data and the research question.</p></li>
+</ul></li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>r2_glance <span class="ot">&lt;-</span> <span class="fu">glance</span>(q8_model)<span class="sc">$</span>r.squared</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>r2_corr <span class="ot">&lt;-</span> <span class="fu">cor</span>(gapminder_07<span class="sc">$</span>gdpPercap_log, gapminder_07<span class="sc">$</span>lifeExp)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">method =</span> <span class="fu">c</span>(<span class="st">"glance"</span>, <span class="st">"correlation_squared"</span>),</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">r_squared =</span> <span class="fu">c</span>(r2_glance, r2_corr))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 2
+  method              r_squared
+  &lt;chr&gt;                   &lt;dbl&gt;
+1 glance                  0.654
+2 correlation_squared     0.654</code></pre>
+</div>
+</div>
+<p><strong>Answer:</strong> The <span class="math inline">\(R^2\)</span> from the glance function is 0.654 and the <span class="math inline">\(R^2\)</span> from the correlation coefficient is 0.654. They match and also suggest that 65.4% of the variability in the log of the GDP per capita can be explained by the life expectancy.</p>
+</section>
+<section id="question-9" class="level2">
+<h2 class="anchored" data-anchor-id="question-9">Question 9</h2>
+<p>Next, we want to examine if the relationship between GDP and life expectancy that we observed in the previous exercise holds across all continents in our data. We’ll continue to work with logged GDP (<code>gdpPercap_log</code>) and data from 2007.</p>
+<ol type="a">
+<li><strong>Justification:</strong> Create a scatter plot of <code>gdpPercap_log</code> vs.&nbsp;<code>lifeExp</code>, where the points are colored by <code>continent</code>. Do you think the trend between <code>gdpPercap_log</code> and <code>lifeExp</code> is different for different continents? Justify your answer with specific features of the plot.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'plotly'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:ggplot2':
+
+    last_plot</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:stats':
+
+    filter</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:graphics':
+
+    layout</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>p<span class="ot">&lt;-</span><span class="fu">ggplot</span>(gapminder_07, <span class="fu">aes</span>(<span class="at">x =</span> lifeExp, <span class="at">y =</span> gdpPercap_log, <span class="at">color =</span> continent)) <span class="sc">+</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Log GDP per Capita vs Life Expectancy by Continent (2007)"</span>,</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Life expectancy (years)"</span>,</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"log(GDP per capita)"</span>,</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Continent"</span></span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplotly</span>(p)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-aef90cbd089a1031a63b" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-aef90cbd089a1031a63b">{"x":{"data":[{"x":[72.301000000000002,42.731000000000002,56.728000000000002,50.728000000000002,52.295000000000002,49.579999999999998,50.43,44.741,50.651000000000003,65.152000000000001,46.462000000000003,55.322000000000003,48.328000000000003,54.790999999999997,71.337999999999994,51.579000000000001,58.039999999999999,52.947000000000003,56.734999999999999,59.448,60.021999999999998,56.006999999999998,46.387999999999998,54.109999999999999,42.591999999999999,45.677999999999997,73.951999999999998,59.442999999999998,48.302999999999997,54.466999999999999,64.164000000000001,72.801000000000002,71.164000000000001,42.082000000000001,52.905999999999999,56.866999999999997,46.859000000000002,76.441999999999993,46.241999999999997,65.528000000000006,63.061999999999998,42.567999999999998,48.158999999999999,49.338999999999999,58.555999999999997,39.613,52.517000000000003,58.420000000000002,73.923000000000002,51.542000000000002,42.384,43.487000000000002],"y":[8.7360664323196779,8.4757942110966855,7.2732902676478703,9.4390565091519942,7.1041712035485451,6.0639495942453294,7.6217316381854561,6.5596386607316637,7.4407711034036366,6.8938063222615895,5.6260077939251323,8.1976923066736695,7.3426174364447272,7.6413155226212721,8.6271556813680927,9.4054209970682336,6.4636057706951746,6.5378584178959986,9.4884632394650907,6.6237328040273367,7.1911347911821411,6.8486995251422478,6.3617026444730875,7.2884147774826742,7.3584049745286633,6.0270906861193438,9.3974420922292534,6.9515521650812184,6.6324626857855433,6.9494551827472755,7.4972912440772363,9.3017329899642505,8.2480515722762942,6.7137889285895307,8.4786728022108839,6.4291982009074955,7.6078668045953535,8.9450878731123886,6.7605171932458923,7.3767803602309128,7.4456932990551019,6.7598824012383814,6.8310265646200534,9.1345017439627085,7.864187451932577,8.4148238960395254,7.009844413302285,6.7832911612930324,8.8668528088945049,6.9626033625632262,7.1477257349103116,6.1521139886641381],"text":["lifeExp: 72.301<br />gdpPercap_log:  8.736066<br />continent: Africa","lifeExp: 42.731<br />gdpPercap_log:  8.475794<br />continent: Africa","lifeExp: 56.728<br />gdpPercap_log:  7.273290<br />continent: Africa","lifeExp: 50.728<br />gdpPercap_log:  9.439057<br />continent: Africa","lifeExp: 52.295<br />gdpPercap_log:  7.104171<br />continent: Africa","lifeExp: 49.580<br />gdpPercap_log:  6.063950<br />continent: Africa","lifeExp: 50.430<br />gdpPercap_log:  7.621732<br />continent: Africa","lifeExp: 44.741<br />gdpPercap_log:  6.559639<br />continent: Africa","lifeExp: 50.651<br />gdpPercap_log:  7.440771<br />continent: Africa","lifeExp: 65.152<br />gdpPercap_log:  6.893806<br />continent: Africa","lifeExp: 46.462<br />gdpPercap_log:  5.626008<br />continent: Africa","lifeExp: 55.322<br />gdpPercap_log:  8.197692<br />continent: Africa","lifeExp: 48.328<br />gdpPercap_log:  7.342617<br />continent: Africa","lifeExp: 54.791<br />gdpPercap_log:  7.641316<br />continent: Africa","lifeExp: 71.338<br />gdpPercap_log:  8.627156<br />continent: Africa","lifeExp: 51.579<br />gdpPercap_log:  9.405421<br />continent: Africa","lifeExp: 58.040<br />gdpPercap_log:  6.463606<br />continent: Africa","lifeExp: 52.947<br />gdpPercap_log:  6.537858<br />continent: Africa","lifeExp: 56.735<br />gdpPercap_log:  9.488463<br />continent: Africa","lifeExp: 59.448<br />gdpPercap_log:  6.623733<br />continent: Africa","lifeExp: 60.022<br />gdpPercap_log:  7.191135<br />continent: Africa","lifeExp: 56.007<br />gdpPercap_log:  6.848700<br />continent: Africa","lifeExp: 46.388<br />gdpPercap_log:  6.361703<br />continent: Africa","lifeExp: 54.110<br />gdpPercap_log:  7.288415<br />continent: Africa","lifeExp: 42.592<br />gdpPercap_log:  7.358405<br />continent: Africa","lifeExp: 45.678<br />gdpPercap_log:  6.027091<br />continent: Africa","lifeExp: 73.952<br />gdpPercap_log:  9.397442<br />continent: Africa","lifeExp: 59.443<br />gdpPercap_log:  6.951552<br />continent: Africa","lifeExp: 48.303<br />gdpPercap_log:  6.632463<br />continent: Africa","lifeExp: 54.467<br />gdpPercap_log:  6.949455<br />continent: Africa","lifeExp: 64.164<br />gdpPercap_log:  7.497291<br />continent: Africa","lifeExp: 72.801<br />gdpPercap_log:  9.301733<br />continent: Africa","lifeExp: 71.164<br />gdpPercap_log:  8.248052<br />continent: Africa","lifeExp: 42.082<br />gdpPercap_log:  6.713789<br />continent: Africa","lifeExp: 52.906<br />gdpPercap_log:  8.478673<br />continent: Africa","lifeExp: 56.867<br />gdpPercap_log:  6.429198<br />continent: Africa","lifeExp: 46.859<br />gdpPercap_log:  7.607867<br />continent: Africa","lifeExp: 76.442<br />gdpPercap_log:  8.945088<br />continent: Africa","lifeExp: 46.242<br />gdpPercap_log:  6.760517<br />continent: Africa","lifeExp: 65.528<br />gdpPercap_log:  7.376780<br />continent: Africa","lifeExp: 63.062<br />gdpPercap_log:  7.445693<br />continent: Africa","lifeExp: 42.568<br />gdpPercap_log:  6.759882<br />continent: Africa","lifeExp: 48.159<br />gdpPercap_log:  6.831027<br />continent: Africa","lifeExp: 49.339<br />gdpPercap_log:  9.134502<br />continent: Africa","lifeExp: 58.556<br />gdpPercap_log:  7.864187<br />continent: Africa","lifeExp: 39.613<br />gdpPercap_log:  8.414824<br />continent: Africa","lifeExp: 52.517<br />gdpPercap_log:  7.009844<br />continent: Africa","lifeExp: 58.420<br />gdpPercap_log:  6.783291<br />continent: Africa","lifeExp: 73.923<br />gdpPercap_log:  8.866853<br />continent: Africa","lifeExp: 51.542<br />gdpPercap_log:  6.962603<br />continent: Africa","lifeExp: 42.384<br />gdpPercap_log:  7.147726<br />continent: Africa","lifeExp: 43.487<br />gdpPercap_log:  6.152114<br />continent: Africa"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(248,118,109,1)","opacity":0.80000000000000004,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(248,118,109,1)"}},"hoveron":"points","name":"Africa","legendgroup":"Africa","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[75.319999999999993,65.554000000000002,72.390000000000001,80.653000000000006,78.552999999999997,72.888999999999996,78.781999999999996,78.272999999999996,72.234999999999999,74.994,71.878,70.259,60.915999999999997,70.197999999999993,72.566999999999993,76.194999999999993,72.899000000000001,75.537000000000006,71.751999999999995,71.421000000000006,78.745999999999995,69.819000000000003,78.242000000000004,76.384,73.747],"y":[9.455588185282302,8.248564991242306,9.1122644618131794,10.500102769993411,9.4858212251124794,8.8546050463150454,9.1742012933859094,9.0991968248907611,8.7037349559266222,8.8353941380056362,8.6531834235656859,8.5537276079726823,7.0914402009712578,8.1742325876728454,8.8984858540969647,9.3907914271388631,7.9191092383522239,9.1910745354540531,8.3363517700412064,8.9104380098109228,9.8693467831122312,9.7985996607296073,10.66783041537953,9.2696901099440332,9.3427541381638832],"text":["lifeExp: 75.320<br />gdpPercap_log:  9.455588<br />continent: Americas","lifeExp: 65.554<br />gdpPercap_log:  8.248565<br />continent: Americas","lifeExp: 72.390<br />gdpPercap_log:  9.112264<br />continent: Americas","lifeExp: 80.653<br />gdpPercap_log: 10.500103<br />continent: Americas","lifeExp: 78.553<br />gdpPercap_log:  9.485821<br />continent: Americas","lifeExp: 72.889<br />gdpPercap_log:  8.854605<br />continent: Americas","lifeExp: 78.782<br />gdpPercap_log:  9.174201<br />continent: Americas","lifeExp: 78.273<br />gdpPercap_log:  9.099197<br />continent: Americas","lifeExp: 72.235<br />gdpPercap_log:  8.703735<br />continent: Americas","lifeExp: 74.994<br />gdpPercap_log:  8.835394<br />continent: Americas","lifeExp: 71.878<br />gdpPercap_log:  8.653183<br />continent: Americas","lifeExp: 70.259<br />gdpPercap_log:  8.553728<br />continent: Americas","lifeExp: 60.916<br />gdpPercap_log:  7.091440<br />continent: Americas","lifeExp: 70.198<br />gdpPercap_log:  8.174233<br />continent: Americas","lifeExp: 72.567<br />gdpPercap_log:  8.898486<br />continent: Americas","lifeExp: 76.195<br />gdpPercap_log:  9.390791<br />continent: Americas","lifeExp: 72.899<br />gdpPercap_log:  7.919109<br />continent: Americas","lifeExp: 75.537<br />gdpPercap_log:  9.191075<br />continent: Americas","lifeExp: 71.752<br />gdpPercap_log:  8.336352<br />continent: Americas","lifeExp: 71.421<br />gdpPercap_log:  8.910438<br />continent: Americas","lifeExp: 78.746<br />gdpPercap_log:  9.869347<br />continent: Americas","lifeExp: 69.819<br />gdpPercap_log:  9.798600<br />continent: Americas","lifeExp: 78.242<br />gdpPercap_log: 10.667830<br />continent: Americas","lifeExp: 76.384<br />gdpPercap_log:  9.269690<br />continent: Americas","lifeExp: 73.747<br />gdpPercap_log:  9.342754<br />continent: Americas"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(163,165,0,1)","opacity":0.80000000000000004,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(163,165,0,1)"}},"hoveron":"points","name":"Americas","legendgroup":"Americas","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[43.828000000000003,75.635000000000005,64.061999999999998,59.722999999999999,72.960999999999999,82.207999999999998,64.697999999999993,70.650000000000006,70.963999999999999,59.545000000000002,80.745000000000005,82.602999999999994,72.534999999999997,67.296999999999997,78.623000000000005,77.587999999999994,71.992999999999995,74.241,66.802999999999997,62.069000000000003,63.784999999999997,75.640000000000001,65.483000000000004,71.688000000000002,72.777000000000001,79.971999999999994,72.396000000000001,74.143000000000001,78.400000000000006,70.616,74.248999999999995,73.421999999999997,62.698],"y":[6.8820069561857968,10.302131057660269,7.2379606281925088,7.4464559694672863,8.5089825469388156,10.5897354544633,7.8047451037334943,8.1720660468184114,9.3592528842411742,8.4053812222575601,10.147346142223887,10.362685133050313,8.4161480557644524,7.3734154138989147,10.058272590972555,10.764413339037992,9.2554149447343939,9.4296088890336076,8.037792676125699,6.8501261661455004,6.9951797004904668,10.013067831605971,7.8655516423635223,8.0679269731261485,9.982983892824338,10.760944625212437,8.2865454053823964,8.3391539935803909,10.26528902275493,8.9170957005174909,7.8003991768887868,8.0147819994821283,7.7322683430182542],"text":["lifeExp: 43.828<br />gdpPercap_log:  6.882007<br />continent: Asia","lifeExp: 75.635<br />gdpPercap_log: 10.302131<br />continent: Asia","lifeExp: 64.062<br />gdpPercap_log:  7.237961<br />continent: Asia","lifeExp: 59.723<br />gdpPercap_log:  7.446456<br />continent: Asia","lifeExp: 72.961<br />gdpPercap_log:  8.508983<br />continent: Asia","lifeExp: 82.208<br />gdpPercap_log: 10.589735<br />continent: Asia","lifeExp: 64.698<br />gdpPercap_log:  7.804745<br />continent: Asia","lifeExp: 70.650<br />gdpPercap_log:  8.172066<br />continent: Asia","lifeExp: 70.964<br />gdpPercap_log:  9.359253<br />continent: Asia","lifeExp: 59.545<br />gdpPercap_log:  8.405381<br />continent: Asia","lifeExp: 80.745<br />gdpPercap_log: 10.147346<br />continent: Asia","lifeExp: 82.603<br />gdpPercap_log: 10.362685<br />continent: Asia","lifeExp: 72.535<br />gdpPercap_log:  8.416148<br />continent: Asia","lifeExp: 67.297<br />gdpPercap_log:  7.373415<br />continent: Asia","lifeExp: 78.623<br />gdpPercap_log: 10.058273<br />continent: Asia","lifeExp: 77.588<br />gdpPercap_log: 10.764413<br />continent: Asia","lifeExp: 71.993<br />gdpPercap_log:  9.255415<br />continent: Asia","lifeExp: 74.241<br />gdpPercap_log:  9.429609<br />continent: Asia","lifeExp: 66.803<br />gdpPercap_log:  8.037793<br />continent: Asia","lifeExp: 62.069<br />gdpPercap_log:  6.850126<br />continent: Asia","lifeExp: 63.785<br />gdpPercap_log:  6.995180<br />continent: Asia","lifeExp: 75.640<br />gdpPercap_log: 10.013068<br />continent: Asia","lifeExp: 65.483<br />gdpPercap_log:  7.865552<br />continent: Asia","lifeExp: 71.688<br />gdpPercap_log:  8.067927<br />continent: Asia","lifeExp: 72.777<br />gdpPercap_log:  9.982984<br />continent: Asia","lifeExp: 79.972<br />gdpPercap_log: 10.760945<br />continent: Asia","lifeExp: 72.396<br />gdpPercap_log:  8.286545<br />continent: Asia","lifeExp: 74.143<br />gdpPercap_log:  8.339154<br />continent: Asia","lifeExp: 78.400<br />gdpPercap_log: 10.265289<br />continent: Asia","lifeExp: 70.616<br />gdpPercap_log:  8.917096<br />continent: Asia","lifeExp: 74.249<br />gdpPercap_log:  7.800399<br />continent: Asia","lifeExp: 73.422<br />gdpPercap_log:  8.014782<br />continent: Asia","lifeExp: 62.698<br />gdpPercap_log:  7.732268<br />continent: Asia"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,191,125,1)","opacity":0.80000000000000004,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(0,191,125,1)"}},"hoveron":"points","name":"Asia","legendgroup":"Asia","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[76.423000000000002,79.828999999999994,79.441000000000003,74.852000000000004,73.004999999999995,75.748000000000005,76.486000000000004,78.331999999999994,79.313000000000002,80.656999999999996,79.406000000000006,79.483000000000004,73.337999999999994,81.757000000000005,78.885000000000005,80.546000000000006,74.543000000000006,79.762,80.195999999999998,75.563000000000002,78.097999999999999,72.475999999999999,74.001999999999995,74.662999999999997,77.926000000000002,80.941000000000003,80.884,81.700999999999993,71.777000000000001,79.424999999999997],"y":[8.6889642074771061,10.494781744976294,10.425033658433435,8.9154723829586864,9.2762023438413692,9.5900925663637562,10.035975648428332,10.471026688821484,10.410518517683292,10.324498420059683,10.37880125895925,10.223337104679452,9.7986238267910899,10.496283571591434,10.61339342717752,10.26010268418614,9.132799943015339,10.513196962797394,10.806838731715855,9.6414683327338793,9.9286506773450931,9.2880858840382228,9.1887627110675396,9.8351184694884228,10.156898687468367,10.268861777269361,10.429982223586265,10.532267372509699,9.042900694727205,10.4104033814055],"text":["lifeExp: 76.423<br />gdpPercap_log:  8.688964<br />continent: Europe","lifeExp: 79.829<br />gdpPercap_log: 10.494782<br />continent: Europe","lifeExp: 79.441<br />gdpPercap_log: 10.425034<br />continent: Europe","lifeExp: 74.852<br />gdpPercap_log:  8.915472<br />continent: Europe","lifeExp: 73.005<br />gdpPercap_log:  9.276202<br />continent: Europe","lifeExp: 75.748<br />gdpPercap_log:  9.590093<br />continent: Europe","lifeExp: 76.486<br />gdpPercap_log: 10.035976<br />continent: Europe","lifeExp: 78.332<br />gdpPercap_log: 10.471027<br />continent: Europe","lifeExp: 79.313<br />gdpPercap_log: 10.410519<br />continent: Europe","lifeExp: 80.657<br />gdpPercap_log: 10.324498<br />continent: Europe","lifeExp: 79.406<br />gdpPercap_log: 10.378801<br />continent: Europe","lifeExp: 79.483<br />gdpPercap_log: 10.223337<br />continent: Europe","lifeExp: 73.338<br />gdpPercap_log:  9.798624<br />continent: Europe","lifeExp: 81.757<br />gdpPercap_log: 10.496284<br />continent: Europe","lifeExp: 78.885<br />gdpPercap_log: 10.613393<br />continent: Europe","lifeExp: 80.546<br />gdpPercap_log: 10.260103<br />continent: Europe","lifeExp: 74.543<br />gdpPercap_log:  9.132800<br />continent: Europe","lifeExp: 79.762<br />gdpPercap_log: 10.513197<br />continent: Europe","lifeExp: 80.196<br />gdpPercap_log: 10.806839<br />continent: Europe","lifeExp: 75.563<br />gdpPercap_log:  9.641468<br />continent: Europe","lifeExp: 78.098<br />gdpPercap_log:  9.928651<br />continent: Europe","lifeExp: 72.476<br />gdpPercap_log:  9.288086<br />continent: Europe","lifeExp: 74.002<br />gdpPercap_log:  9.188763<br />continent: Europe","lifeExp: 74.663<br />gdpPercap_log:  9.835118<br />continent: Europe","lifeExp: 77.926<br />gdpPercap_log: 10.156899<br />continent: Europe","lifeExp: 80.941<br />gdpPercap_log: 10.268862<br />continent: Europe","lifeExp: 80.884<br />gdpPercap_log: 10.429982<br />continent: Europe","lifeExp: 81.701<br />gdpPercap_log: 10.532267<br />continent: Europe","lifeExp: 71.777<br />gdpPercap_log:  9.042901<br />continent: Europe","lifeExp: 79.425<br />gdpPercap_log: 10.410403<br />continent: Europe"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,176,246,1)","opacity":0.80000000000000004,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(0,176,246,1)"}},"hoveron":"points","name":"Europe","legendgroup":"Europe","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[81.234999999999999,80.203999999999994],"y":[10.446839438460565,10.134004219902934],"text":["lifeExp: 81.235<br />gdpPercap_log: 10.446839<br />continent: Oceania","lifeExp: 80.204<br />gdpPercap_log: 10.134004<br />continent: Oceania"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(231,107,243,1)","opacity":0.80000000000000004,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(231,107,243,1)"}},"hoveron":"points","name":"Oceania","legendgroup":"Oceania","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":40.840182648401829,"r":7.3059360730593621,"b":37.260273972602747,"l":37.260273972602747},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"title":{"text":"Log GDP per Capita vs Life Expectancy by Continent (2007)","font":{"color":"rgba(0,0,0,1)","family":"","size":17.534246575342465},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[37.463499999999996,84.752499999999998],"tickmode":"array","ticktext":["40","50","60","70","80"],"tickvals":[40,50,60,70,80],"categoryorder":"array","categoryarray":["40","50","60","70","80"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.6529680365296811,"tickwidth":0.66417600664176002,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"y","title":{"text":"Life expectancy (years)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[5.3669662470355961,11.065880278605391],"tickmode":"array","ticktext":["6","7","8","9","10","11"],"tickvals":[6,7,8,9,10,11],"categoryorder":"array","categoryarray":["6","7","8","9","10","11"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.6529680365296811,"tickwidth":0.66417600664176002,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"x","title":{"text":"log(GDP per capita)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"shapes":[],"showlegend":true,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.8897637795275593,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498},"title":{"text":"Continent","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"149ab43da6d82":{"x":{},"y":{},"colour":{},"type":"scatter"}},"cur_data":"149ab43da6d82","visdat":{"149ab43da6d82":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p><strong>Answer:</strong> Overall, the trend between the log of the GDP per capita and the life expectancy is positive for all continents. However, the trend is different for different continents.For instance, Africa has most of points clustered around the bottom left of the plot suggesting lower life expectancy and lower GDP per capita. Europe, Amercas and Oceania has most of the points clustered around the top right of the plot suggesting higher life expectancy and higher GDP per capita. Asia has a more scattered pattern suggesting a more mixed relationship between life expectancy and GDP per capita.</p>
+<ol start="2" type="a">
+<li><p><strong>Model fitting and interpretation:</strong></p>
+<ul>
+<li><p>Regardless of your answer in part (a), fit an <u>additive model</u> (main effects) that predicts <code>gdpPercap_log</code> from life expectancy and continent (with Africas as the baseline level). Display a tidy summary of the model output.</p></li>
+<li><p>Interpret the <em>intercept</em> of the model, making sure that your interpretation is in the units of the original data (not on log scale).</p></li>
+<li><p>Interpret the <em>slope</em> of the model, making sure that your interpretation is in the units of the original data (not on log scale).</p></li>
+</ul></li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>gapminder_07 <span class="ot">&lt;-</span> gapminder_07 <span class="sc">|&gt;</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">continent =</span> <span class="fu">fct_relevel</span>(continent, <span class="st">"Africa"</span>))</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>q9_additive_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(gdpPercap_log <span class="sc">~</span> lifeExp <span class="sc">+</span> continent, <span class="at">data =</span> gapminder_07)</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>q9_additive_model_tidy <span class="ot">&lt;-</span> <span class="fu">tidy</span>(q9_additive_model)</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>q9_additive_model_tidy</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 5
+  term              estimate std.error statistic  p.value
+  &lt;chr&gt;                &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+1 (Intercept)         3.20     0.499      6.42   2.11e- 9
+2 lifeExp             0.0781   0.00890    8.78   6.14e-15
+3 continentAmericas   0.0660   0.251      0.263  7.93e- 1
+4 continentAsia       0.0103   0.222      0.0463 9.63e- 1
+5 continentEurope     0.715    0.269      2.66   8.87e- 3
+6 continentOceania    0.779    0.601      1.30   1.97e- 1</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Also show the result in original GDP per capita units by exponentiating the estimates</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>q9_additive_model_tidy_original_units <span class="ot">&lt;-</span> q9_additive_model_tidy <span class="sc">|&gt;</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">estimate_orig =</span> <span class="fu">exp</span>(estimate))</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>q9_additive_model_tidy_original_units</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 6
+  term              estimate std.error statistic  p.value estimate_orig
+  &lt;chr&gt;                &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;         &lt;dbl&gt;
+1 (Intercept)         3.20     0.499      6.42   2.11e- 9         24.7 
+2 lifeExp             0.0781   0.00890    8.78   6.14e-15          1.08
+3 continentAmericas   0.0660   0.251      0.263  7.93e- 1          1.07
+4 continentAsia       0.0103   0.222      0.0463 9.63e- 1          1.01
+5 continentEurope     0.715    0.269      2.66   8.87e- 3          2.04
+6 continentOceania    0.779    0.601      1.30   1.97e- 1          2.18</code></pre>
+</div>
+</div>
+<p><strong>Answer:</strong> In the original units the intercept is 24.651 meaning that in Africa a life expectancy of 0 years would have a GDP per capita of about 24.651$. In the original units the slope would be 1.081257 meaning that for each additional year of life expectancy, the GDP per capita increases by about 1.081257$.</p>
+<ol start="3" type="a">
+<li><strong>Prediction:</strong> Predict the GDP of a country in Asia where the average life expectancy is 70 years old.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>q9_pred_log <span class="ot">&lt;-</span> <span class="fu">predict</span>(</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  q9_additive_model,</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">newdata =</span> <span class="fu">tibble</span>(<span class="at">lifeExp =</span> <span class="dv">70</span>, <span class="at">continent =</span> <span class="st">"Asia"</span>)</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">predicted_log_gdpPercap =</span> q9_pred_log,</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">predicted_gdpPercap =</span> <span class="fu">exp</span>(q9_pred_log)</span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 2
+  predicted_log_gdpPercap predicted_gdpPercap
+                    &lt;dbl&gt;               &lt;dbl&gt;
+1                    8.68               5907.</code></pre>
+</div>
+</div>
+<p><strong>Answer:</strong> The expected GDP would be about 5907$.</p>
+</section>
+<section id="question-10" class="level2">
+<h2 class="anchored" data-anchor-id="question-10">Question 10</h2>
+<p>Communication is a critical yet often overlooked part of data science. When we engage with our audience and capture their interest, we can ultimately better communicate what we are trying to share.</p>
+<p>Please watch the following video: <a href="https://www.youtube.com/watch?v=Z8t4k0Q8e8Y">Hans Rosling: 200 years in 4 minutes</a>.</p>
+<p>Then, write a paragraph (4-5 sentences) addressing the following:</p>
+<ul>
+<li><p>What did you enjoy about the presentation of data? What did you find interesting</p></li>
+<li><p>Were there any aspects of the presentation that were hard to follow? If so, what?</p></li>
+<li><p>What are your general take-aways from this presentation?</p></li>
+<li><p>What are your general take-aways from how this presentation was given?</p></li>
+</ul>
+<p><strong>Answer:</strong> I really liked the presentation style and how Hans Rosling turned a huge dataset into an animated story. Some of the time periods were hard to follow as he went over those very quickly. Key takeaways for me were, global health and income has improved a lot overall but the progress wasn’t evenly spread. Big gaps still exist between countries and even within countries. The presentation had a strong narration plus fluid motion based visual that made complex trends easy to understand.</p>
+</section>
+</section>
+<section id="wrap-up" class="level1">
+<h1>Wrap-up</h1>
+<section id="submission" class="level2">
+<h2 class="anchored" data-anchor-id="submission">Submission</h2>
+<p>Once you are finished with the lab, you will submit your final PDF document to Canvas.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Before you wrap up the assignment, make sure all of your documents are updated on your GitHub repo. We will be checking these to make sure you have been practicing how to commit and push changes.</p>
+<p>You must turn in a PDF file to the Canvas page by the submission deadline to be considered “on time”.</p>
+</div>
+</div>
+<p>To submit your assignment:</p>
+<ul>
+<li>Go to <a href="http://www.Canvas.com" class="uri">http://www.Canvas.com</a> and click <em>Log in</em> in the top right corner.</li>
+<li>Click <em>School Credentials</em> <span class="math inline">\(\rightarrow\)</span> <em>Duke NetID</em> and log in using your NetID credentials.</li>
+<li>Click on your <em>REN R 213</em> course.</li>
+<li>Click on the assignment, and you’ll be prompted to submit it.</li>
+<li>Mark all the pages associated with question. All the pages of your lab should be associated with at least one question (i.e., should be “checked”).</li>
+</ul>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Checklist
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Make sure you have:</p>
+<ul>
+<li>attempted all questions</li>
+<li>rendered your Quarto document</li>
+<li>committed and pushed everything to your GitHub repository such that the Git pane in RStudio is empty</li>
+<li>uploaded your PDF to Canvas</li>
+<li>selected pages associated with each question on Canvas</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="grading" class="level2">
+<h2 class="anchored" data-anchor-id="grading">Grading</h2>
+<p>The lab is graded out of a total of 4 points.</p>
+<p>You can earn up to 4 points on each question:</p>
+<ul>
+<li><p>4: Response shows excellent understanding and addresses all or almost all of the rubric items.</p></li>
+<li><p>3: Response shows good understanding and addresses most of the rubric items.</p></li>
+<li><p>2: Response shows understanding and addresses a majority of the rubric items.</p></li>
+<li><p>1: Response shows effort and misses many of the rubric items.</p></li>
+<li><p>0: Response does not show sufficient effort or understanding and/or is largely incomplete.</p></li>
+</ul>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
