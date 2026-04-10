@@ -1,6 +1,7 @@
 ---
 title: "Lab 5 - Modelling I"
 categories: "Lab"
+author: "Prabhjot Singh"
 ---
 
 # Introduction
@@ -89,13 +90,16 @@ tidy(q2_age_model)
 ```
 
 b.  In 2-3 sentences, explain how the regression line to model these data is fit, i.e., based on what criteria R determines the regression line.
+
 **Answer:** It is based on the least squares method meaning that R is calculating the line that minimizes the sum of the squared distances between the points and the line. The distance between the point and the line is the residual.
 
 
 c.  Interpret the intercept in the context of the data and the research question. Is the intercept meaningful in this context? Why or why not?
+
 **Answer:**  The intercept is the weight of a baby when the mother's age is 0. This is not meaningful in this context because it is not possible for a mother to be 0 years old.
 
 d.  Interpret the slope in the context of the data and the research question.
+
 **Answer:**
 The slope is the expected change in weight of a baby for each year of the mother's age. In this case the suggested positiver elationship is that the weight of a baby increases by 0.014 ounces for each additional year of the mother's age.
 
@@ -150,6 +154,7 @@ ggplot(parasites, aes(x = divergence_time, y = parsim)) +
 ```
 
 d.  Use the visualization to describe the relationship between the two variables.
+
 **Answer:** The relationship between the two variables is negative. As the divergence time increases, the parasite similarity decreases.
 
 
@@ -170,6 +175,7 @@ b.  Interpret the slope and the intercept in the context of the data.
 $$
 \hat{parsim}=0.379-0.006 (divergencetime)
 $$
+
 **Answer:** The slope is the expected change in parasite similarity for each additional million years of divergence time. In this case the suggested negative relationship is that the parasite similarity decreases by 0.006 for each additional million years of divergence time.
 
 c.  Recreate the visualization from Question 3, this time adding a regression line to the visualization.
@@ -186,6 +192,7 @@ ggplot(parasites, aes(x = divergence_time, y = parsim)) +
 ```
 
 d.  What do you notice about the prediction (regression) line that may be strange, particularly for very large divergence times?
+
 **Answer:**
 The prediction line is strange because it suggests that the parasite similarity is 0 for very large divergence times like >70 million years.
 
@@ -258,6 +265,7 @@ $$
 $$
 
 b.  To answer the question of interest, would it be useful to compare the slopes in each model to choose the variable that is the strongest predictor of parasite similarity? Why or why not?
+
 **Answer:** No, it is not useful as all the slopes have a different unit making them incomparable. The bigger absolute slope is not necessarily the strongest predictor.
 
 ## Question 7
@@ -454,6 +462,8 @@ Then, write a paragraph (4-5 sentences) addressing the following:
 -   What are your general take-aways from this presentation?
 
 -   What are your general take-aways from how this presentation was given?
+
+**Answer:** I really liked the presentation style and how Hans Rosling turned a huge dataset into an animated story. Some of the time periods were hard to follow as he went over those very quickly. Key takeaways for me were, global health and income has improved a lot overall but the progress wasn't evenly spread. Big gaps still exist between countries and even within countries. The presentation had a strong narration plus fluid motion based visual that made complex trends easy to understand.
 
 # Wrap-up
 
