@@ -242,17 +242,25 @@ a.  Report the slopes for each of these models. Use proper notation.
 
 ```{r}
 bind_rows(
-  tidy(dt_model) %>% filter(term == "divergence_time") %>%
-    mutate(model = "$\\hat{\\beta}_{\\text{divergence\\_time}}$~(dt\\_model)"),
-  tidy(dist_model) %>% filter(term == "distance") %>%
-    mutate(model = "$\\hat{\\beta}_{\\text{distance}}$~(dist\\_model)"),
-  tidy(BM_model) %>% filter(term == "BMdiff") %>%
-    mutate(model = "$\\hat{\\beta}_{\\text{BMdiff}}$~(BM\\_model)"),
-  tidy(prec_model) %>% filter(term == "precdiff") %>%
-    mutate(model = "$\\hat{\\beta}_{\\text{precdiff}}$~(prec\\_model)")
-) %>%
+  tidy(dt_model) |> filter(term == "divergence_time") |> mutate(model = "dt_model"),
+  tidy(dist_model) |> filter(term == "distance") |> mutate(model = "dist_model"),
+  tidy(BM_model) |> filter(term == "BMdiff") |> mutate(model = "BM_model"),
+  tidy(prec_model) |> filter(term == "precdiff") |> mutate(model = "prec_model")
+) |> 
   select(model, term, estimate)
 ```
+
+The slope estimates from each model are: 
+
+$$
+\begin{aligned}
+\hat{\beta}_{dt} &= \text{<r signif(coef(dt_model)[2], 3)>} \\\\
+\hat{\beta}_{dist} &= \text{<r signif(coef(dist_model)[2], 3)>} \\\\
+\hat{\beta}_{BM} &= \text{<r signif(coef(BM_model)[2], 3)>} \\\\
+\hat{\beta}_{prec} &= \text{<r signif(coef(prec_model)[2], 3)>}
+\end{aligned}
+$$
+
 
 b.  To answer the question of interest, would it be useful to compare the slopes in each model to choose the variable that is the strongest predictor of parasite similarity? Why or why not?
 
@@ -268,15 +276,32 @@ a.  Calculate and report $R^2$ for each model fit in the previous exercise.
 
 ```{r}
 bind_rows(
-  glance(dt_model) %>% mutate(model = "dt_model"),
-  glance(dist_model) %>% mutate(model = "dist_model"),
-  glance(BM_model) %>% mutate(model = "BM_model"),
-  glance(prec_model) %>% mutate(model = "prec_model")
-) %>%
+  glance(dt_model) |> mutate(model = "dt_model"),
+  glance(dist_model) |> mutate(model = "dist_model"),
+  glance(BM_model) |> mutate(model = "BM_model"),
+  glance(prec_model) |> mutate(model = "prec_model")
+) |>
   select(model, r.squared)
 ```
+$$
+R^2_{dt}=0.512
+$$
+$$
+R^2_{dist}=0.443
+$$
+
+$$
+R^2_{BM}=0.003
+$$
+
+$$
+R^2_{prec}=0.008
+$$
 
 b.  To answer our question of interest, would it be useful to compare the $R^2$ in each model to choose the variable that is the strongest predictor of parasite similarity? Why or why not?
+$$
+
+$$
 
 # Part 3 - GDP and life expectancy
 
@@ -298,7 +323,7 @@ Gapminder is a “fact tank” that uses publicly available world data to produc
 
 a.  **Data:** For our analysis, we will only be working with data from 2007. Below, filter the data set so only values from the year 2007 are shown. Save this data set as `gapminder_07` and use it for the remainder of this exercise and the following.
 
-```{r}
+``` {r}
 gapminder_07 <- gapminder %>%
   filter(year == 2007) %>%
   mutate(gdpPercap_log = log(gdpPercap))
@@ -312,7 +337,7 @@ b.  **Visualization:** We are interested in learning more about GDP, and we’ll
 
     First describe the relationship between each pair of the variables. Then, comment on which relationship would be better modeled using a linear model, and explain your reasoning.
 
-```{r}
+``` {r}
 ggplot(gapminder_07, aes(x = gdpPercap, y = lifeExp)) +
   geom_point(alpha = 0.7) +
   labs(
@@ -334,7 +359,7 @@ c.  **Model fitting:**
 
     -   Fit a linear model predicting log gross domestic product from life expectancy. Display the tidy summary.
 
-```{r}
+``` {r}
 q8_model <- lm(gdpPercap_log ~ lifeExp, data = gapminder_07)
 tidy(q8_model)
 ```
@@ -345,20 +370,21 @@ d.  **Model evaluation:**
 
     -   Interpret R-squared in the context of the data and the research question.
 
-```{r}
+``` {r}
 r2_glance <- glance(q8_model)$r.squared
 r2_corr <- cor(gapminder_07$gdpPercap_log, gapminder_07$lifeExp)^2
 tibble(method = c("glance", "correlation_squared"),
        r_squared = c(r2_glance, r2_corr))
 ```
-
+$$
+$$
 ## Question 9
 
 Next, we want to examine if the relationship between GDP and life expectancy that we observed in the previous exercise holds across all continents in our data. We’ll continue to work with logged GDP (`gdpPercap_log`) and data from 2007.
 
 a.  **Justification:** Create a scatter plot of `gdpPercap_log` vs. `lifeExp`, where the points are colored by `continent`. Do you think the trend between `gdpPercap_log` and `lifeExp` is different for different continents? Justify your answer with specific features of the plot.
 
-```{r}
+``` {r}
 ggplot(gapminder_07, aes(x = lifeExp, y = gdpPercap_log, color = continent)) +
   geom_point(alpha = 0.8) +
   labs(
@@ -369,6 +395,8 @@ ggplot(gapminder_07, aes(x = lifeExp, y = gdpPercap_log, color = continent)) +
   )
 ```
 
+$$
+$$
 b.  **Model fitting and interpretation:**
 
     -   Regardless of your answer in part (a), fit an [additive model]{.underline} (main effects) that predicts `gdpPercap_log` from life expectancy and continent (with Africas as the baseline level). Display a tidy summary of the model output.
@@ -377,8 +405,8 @@ b.  **Model fitting and interpretation:**
 
     -   Interpret the *slope* of the model, making sure that your interpretation is in the units of the original data (not on log scale).
 
-```{r}
-gapminder_07 <- gapminder_07 %>%
+``` {r}
+gapminder_07 <- gapminder_07 |>
   mutate(continent = fct_relevel(continent, "Africa"))
 
 q9_additive_model <- lm(gdpPercap_log ~ lifeExp + continent, data = gapminder_07)
@@ -387,7 +415,7 @@ tidy(q9_additive_model)
 
 c.  **Prediction:** Predict the GDP of a country in Asia where the average life expectancy is 70 years old.
 
-```{r}
+``` {r}
 q9_pred_log <- predict(
   q9_additive_model,
   newdata = tibble(lifeExp = 70, continent = "Asia")
